@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * User.
@@ -17,7 +18,7 @@ public class User {
     String alias;
     String realname;
     String shortBio;
-    List<Message> messages;
+    List<Message> messages = new ArrayList<Message>();
 
     public User() {
     }

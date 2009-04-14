@@ -17,6 +17,17 @@ public class Message {
     String text;
     User author;
 
+    public Message() {
+    }
+
+    public Message(User author, String text) {
+        this.author = author;
+        if (text!=null) {
+            this.text = text.length()>140?text.substring(0, 140):text;
+        }
+        this.sent = new Date();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Message_SEQ")
     public Long getId() {
