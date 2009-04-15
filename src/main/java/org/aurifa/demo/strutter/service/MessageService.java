@@ -2,8 +2,10 @@ package org.aurifa.demo.strutter.service;
 
 import org.aurifa.demo.strutter.model.Message;
 import org.aurifa.demo.strutter.model.User;
+import org.aurifa.demo.strutter.exception.NonExistentUserException;
 import org.springframework.util.Assert;
 import org.springframework.stereotype.Service;
+import org.hibernate.LockMode;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,12 +33,31 @@ public class MessageService extends GenericEntityService<Message, Long> {
         }
     }
 
-    public List<Message> getTimeline(User user) {
-        return null;
+    public Message post( String authorName, String message ) throws NonExistentUserException {
+        User author = userService.get(authorName);
+        if (author != null) {
+            return post(author, message);
+        } else {
+            throw new NonExistentUserException("User " + authorName + " does not exist");
+        }
     }
 
-    public List<Message> getPosts(User user) {
-        return null;
+    @SuppressWarnings({"unchecked"})
+    public List<Message> getTimeline(String authorName) {
+        return createQuery("from Message where author.alias=:authorName" +
+                " or text like '%@'||:authorName||'%'" +
+                " order by sent desc")
+                .setString("authorName", authorName)
+                .list();
+    }
+
+    public List<Message> getPosts(String authorName) throws NonExistentUserException {
+        User user = userService.get(authorName);
+        if (user != null) {
+            return user.getMessages();
+        } else {
+            throw new NonExistentUserException("User " + authorName + " does not exist");
+        }
     }
 
 }
