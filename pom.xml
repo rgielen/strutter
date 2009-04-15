@@ -6,7 +6,7 @@
     <artifactId>Strutter</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Strutter Microblogging Platform Deme</name>
+    <name>Strutter Microblogging Platform Demo</name>
 
     <dependencies>
         <dependency>
@@ -25,6 +25,16 @@
             <groupId>net.sf.beanlib</groupId>
             <artifactId>beanlib-hibernate</artifactId>
             <version>3.3.0beta19</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
