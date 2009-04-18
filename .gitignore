@@ -1,0 +1,15 @@
+.DS_Store
+*~
+*.swp
+*.iml
+*.iws
+*.ipr
+target
+clients/target
+clients/flex/target
+clients/gwt/target
+clients/jquery/target
+clients/javafx/target
+clients/swing/target
+server/target
+
