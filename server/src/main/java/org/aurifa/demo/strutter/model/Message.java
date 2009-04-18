@@ -18,6 +18,7 @@ public class Message {
     User author;
 
     public Message() {
+        this.sent = new Date();
     }
 
     public Message(User author, String text) {
@@ -52,7 +53,9 @@ public class Message {
     }
 
     public void setText( String text ) {
-        this.text = text;
+        if (text!=null) {
+            this.text = text.length()>140?text.substring(0, 140):text;
+        }
     }
 
     @ManyToOne

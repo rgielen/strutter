@@ -12,4 +12,8 @@ clients/jquery/target
 clients/javafx/target
 clients/swing/target
 server/target
+server/strutter.properties
+server/strutter.script
+server/strutter.log
+server/strutter.lck
 

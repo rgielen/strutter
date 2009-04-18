@@ -14,15 +14,21 @@
            http://www.springframework.org/schema/context/spring-context-2.5.xsd
           ">
 
+    <!-- Activates scanning of @Autowired -->
     <context:annotation-config/>
+
+    <!-- Activates scanning of @Service -->
     <context:component-scan base-package="org.aurifa.demo.strutter"/>
 
+    <!-- Enable @Transactional support -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <tx:jta-transaction-manager />
+    
     <bean id="defaultDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
         <property name="url" value="jdbc:hsqldb:mem:aname"/>
-        <!--
-                <property name="url" value="jdbc:hsqldb:file:./strutter;shutdown=true"/>
-        -->
+        <!--<property name="url" value="jdbc:hsqldb:file:./strutter;shutdown=true"/>-->
         <property name="username" value="sa"/>
         <property name="password" value=""/>
     </bean>
@@ -39,7 +45,8 @@
             <value>
                 hibernate.hbm2ddl.auto=update
                 hibernate.show_sql=true
-                hibernate.connection.autocommit=false
+                hibernate.connection.autocommit=true
+                hibernate.transaction.flush_before_completion=true
             </value>
         </property>
     </bean>
@@ -52,6 +59,6 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
 
 </beans>

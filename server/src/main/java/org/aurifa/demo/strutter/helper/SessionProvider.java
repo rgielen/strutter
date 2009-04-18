@@ -14,7 +14,7 @@ public class SessionProvider extends HibernateDaoSupport {
 
     protected void initDao() throws Exception {
         super.initDao();
-        getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_COMMIT);
+        getHibernateTemplate().setFlushMode(HibernateTemplate.FLUSH_AUTO);
     }
 
     public void setAllowCreateNew( boolean allowCreateNew ) {

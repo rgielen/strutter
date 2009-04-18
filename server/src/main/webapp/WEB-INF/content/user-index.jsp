@@ -10,7 +10,6 @@
 </head>
 <body>
     <s:actionmessage />
-    <s:property value="%{model}" />
     <table>
         <tr>
             <th>Alias</th>

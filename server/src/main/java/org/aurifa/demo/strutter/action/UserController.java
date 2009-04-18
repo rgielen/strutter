@@ -10,6 +10,8 @@ import org.apache.struts2.rest.HttpHeaders;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.convention.annotation.Result;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 @Results({
                 @Result(name="success", type="redirectAction", params = {"actionName", "user"})
 })
+@Transactional
 public class UserController extends ValidationAwareSupport implements ModelDriven<Object>, Validateable {
 
     private User model = new User();
@@ -30,8 +33,11 @@ public class UserController extends ValidationAwareSupport implements ModelDrive
     private List<User> list;
 
     @Resource
-    private UserService userService;
+    UserService userService;
 
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     // GET /user/1
     public HttpHeaders show() {
@@ -47,7 +53,6 @@ public class UserController extends ValidationAwareSupport implements ModelDrive
     // POST /user
     public HttpHeaders create() {
         try {
-            System.err.println("Got userservice:  " + userService);
             model = userService.createUser(model.getAlias(), model.getRealname(), model.getShortBio());
             addActionMessage("New user created successfully");
         } catch (UserAlreadyExistentException e) {
@@ -57,10 +62,10 @@ public class UserController extends ValidationAwareSupport implements ModelDrive
     }
 
     // UPDATE /user/1
-    public HttpHeaders update() {
+    public String update() {
         model = userService.saveOrUpdate(model);
         addActionMessage("User updated successfully");
-        return new DefaultHttpHeaders("update");
+        return "success";
     }
     
 
