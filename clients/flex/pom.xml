@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.aurifa.demo</groupId>
+        <artifactId>strutter-clients</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.aurifa.demo</groupId>
+    <artifactId>strutter-flex-client</artifactId>
+    <packaging>swf</packaging>
+    <name>Strutter Microblogging Platform: The Adobe Flex Client</name>
+
+    <build>
+        <sourceDirectory>src/main/flex</sourceDirectory>
+        <testSourceDirectory>src/test/flex</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.flexmojos</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <extensions>true</extensions>
+                <executions>
+                  <execution>
+                    <goals>
+                      <goal>wrapper</goal>
+                    </goals>
+                    <configuration>
+                      <parameters>
+                        <swf>${build.finalName}</swf>
+                        <width>100%</width>
+                        <height>100%</height>
+                      </parameters>
+                    </configuration>
+                  </execution>
+                </executions>
+            </plugin>
+
+            <!--<plugin>-->
+            <!--<artifactId>maven-jar-plugin</artifactId>-->
+            <!--<configuration>-->
+            <!--<archive>-->
+            <!--<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>-->
+            <!--</archive>-->
+            <!--</configuration>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+            <!--<groupId>org.apache.maven.plugins</groupId>-->
+            <!--<artifactId>maven-source-plugin</artifactId>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>attach-source</id>-->
+            <!--<goals>-->
+            <!--<goal>jar</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
+
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>flexmojos-repository</id>
+            <url>http://repository.sonatype.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>flexmojos-repository</id>
+            <url>http://repository.sonatype.org/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>flex-framework</artifactId>
+            <version>3.3.0.4852</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
+
+</project>

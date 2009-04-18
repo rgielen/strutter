@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.aurifa.demo</groupId>
+        <artifactId>strutter-clients</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.aurifa.demo</groupId>
+    <artifactId>strutter-javafx-client</artifactId>
+    <packaging>jar</packaging>
+    <name>Strutter Microblogging Platform: The JavaFX Client</name>
+
+    <properties>
+        <javafx.home>/Library/Frameworks/JavaFX.framework/Versions/1.1</javafx.home>
+        <netbeans.hint.useExternalMaven>true</netbeans.hint.useExternalMaven>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>javafx</groupId>
+            <artifactId>javafxrt</artifactId>
+            <version>1.1.1</version>
+            <scope>system</scope>
+            <systemPath>${javafx.home}/lib/shared/javafxrt.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javafx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>1.1.1</version>
+            <scope>system</scope>
+            <systemPath>${javafx.home}/lib/desktop/javafx-swing.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javafx</groupId>
+            <artifactId>Scenario</artifactId>
+            <version>1.1.1</version>
+            <scope>system</scope>
+            <systemPath>${javafx.home}/lib/desktop/Scenario.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javafx</groupId>
+            <artifactId>javafxgui</artifactId>
+            <version>1.1.1</version>
+            <scope>system</scope>
+            <systemPath>${javafx.home}/lib/desktop/javafxgui.jar</systemPath>
+        </dependency>
+    </dependencies>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>m2-javafxc</id>
+            <name>Sourceforge M2-javafxc static repo</name>
+            <url>http://m2-javafxc.sourceforge.net/m2repo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <sourceDirectory>src/main/javafx</sourceDirectory>
+        <testSourceDirectory>src/test/javafx</testSourceDirectory>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerId>javafxc</compilerId>
+                    <include>**/*.fx</include>
+                    <compilerArguments>
+                        <jfxHome>false</jfxHome>
+                    </compilerArguments>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.m2javafxc</groupId>
+                        <artifactId>plexus-compiler-javafxc</artifactId>
+                        <version>0.1-SNAPSHOT</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javafx</groupId>
+                        <artifactId>javafxc</artifactId>
+                        <version>1.1.1</version>
+                        <scope>system</scope>
+                        <systemPath>${javafx.home}/lib/shared/javafxc.jar</systemPath>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.aurifa.demo.strutter.FXMain</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
