@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+        xmlns:strutter="org.aurifa.demo.strutter.*"
+        width="100%"
+        height="100%"
+        horizontalScrollPolicy="off"
+        verticalScrollPolicy="off"
+        creationComplete="controller.init( )"
+        >
+    <mx:Script><![CDATA[
+        import mx.managers.FocusManager;
+import org.aurifa.demo.strutter.StrutterModel;
+        ]]></mx:Script>
+
+    <strutter:StrutterController id="controller" />
+
+    <mx:HBox left="0" right="0" top="0">
+        <mx:ToolBar styleName="TopToolBar" width="100%">
+            <mx:Button click="StrutterModel.instance.currentView = StrutterModel.VIEW_LOGIN" label="Login"/>
+            <mx:Button click="StrutterModel.instance.currentView = StrutterModel.VIEW_PROFILE" label="Profile"/>
+            <mx:Button click="controller.refresh( )" label="Refresh"/>
+        </mx:ToolBar>
+        <mx:Label text="{ - StrutterModel.MAX_CHARS + textInput.text.length  }" styleName="TopToolCounter" />
+    </mx:HBox>
+    <mx:TextInput
+            left="0" right="0" top="40"
+            id="textInput"
+            maxChars="{ StrutterModel.MAX_CHARS }"
+            text="{ StrutterModel.instance.message }"
+            change="StrutterModel.instance.message = event.target.text"
+            
+            enter="controller.submitMessage( )"
+            styleName="MessageInput" />
+    <mx:TabNavigator left="0" right="0" top="80" bottom="0" id="tabNavigator">
+
+        <mx:VBox label="FRIENDS" width="100%" height="{ this.height - 120 }">
+            <mx:Repeater id="friendsRepeater" dataProvider="{ StrutterModel.instance.friends }" >
+                <strutter:StrutterItem model="{ friendsRepeater.currentItem as StrutterMessage }" />
+            </mx:Repeater>
+        </mx:VBox>
+
+        <mx:VBox label="REPLIES" width="100%" height="{ this.height - 120 }">
+            <mx:Repeater id="repliesRepeater" dataProvider="{ StrutterModel.instance.replies }" >
+                <strutter:StrutterItem model="{ repliesRepeater.currentItem as StrutterMessage }" />
+            </mx:Repeater>
+        </mx:VBox>
+
+        <mx:VBox label="DIRECT" width="100%" height="{ this.height - 120 }">
+            <mx:Repeater id="directsRepeater" dataProvider="{ StrutterModel.instance.directs }" >
+                <strutter:StrutterItem model="{ directsRepeater.currentItem as StrutterMessage }" />
+            </mx:Repeater>
+        </mx:VBox>
+
+    </mx:TabNavigator>
+
+    <mx:Canvas
+            width="100%"
+            height="100%"
+            visible="{ StrutterModel.instance.currentView != StrutterModel.VIEW_NORMAL }"
+            styleName="DisableOverlay" />
+
+    <strutter:StrutterProfile
+            left="0"
+            right="0"
+            top="80"
+            visible="{ StrutterModel.instance.currentView == StrutterModel.VIEW_PROFILE }"
+            submit="controller.profileChanged( )" />
+    <strutter:StrutterLogin
+            left="0"
+            right="0"
+            top="80"
+            visible="{ StrutterModel.instance.currentView == StrutterModel.VIEW_LOGIN }"
+            submit="controller.login( )" />
+<!--
+      <mx:TextArea width="100%" height="100%" text="{ StrutterModel.instance.info }" /> 
+-->
+</mx:Canvas>

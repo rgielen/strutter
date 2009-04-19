@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
+    <mx:Script><![CDATA[
+        [Bindable]
+        public var model:StrutterMessage;
+        ]]></mx:Script>
+    <mx:DateFormatter id="df" formatString="EEEE, MMM. D, YYYY at L:NN A" />
+    <mx:Canvas width="50" height="74" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+        <mx:Image source="{ model.author.icon }" width="50" height="50" />
+        <mx:Button
+                styleName="StrutterItemButton"
+                width="20"
+                height="20"
+                top="52"
+                left="2"
+                label="@"
+                toolTip="reply message"
+                click="StrutterModel.instance.message = '@' + model.author.alias + ' '" />
+    </mx:Canvas>
+
+    <mx:VBox width="100%" styleName="StrutterItemRightBox" minHeight="74" >
+        <mx:HBox width="100%">
+            <mx:Label width="100%" text="{ model.author.alias.toLocaleUpperCase() }" styleName="StrutterItemUserName"/>
+            <mx:Label text="{ model.sentText }" styleName="StrutterItemDate" />
+<!--            <mx:Label text="{ df.format( model.sent ) }" styleName="StrutterItemDate" />    -->
+        </mx:HBox>
+        <mx:Text width="100%" text="{ model.text }" styleName="StrutterItemText" />
+    </mx:VBox>
+
+</mx:HBox>

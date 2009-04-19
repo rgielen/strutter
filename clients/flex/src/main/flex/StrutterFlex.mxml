@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<mx:Application
+        xmlns:mx="http://www.adobe.com/2006/mxml"
+        xmlns:strutter="org.aurifa.demo.strutter.*"
+        height="100%"
+        width="100%" >
+    <mx:Style source="main.css" />
+    <strutter:Strutter />
+</mx:Application>

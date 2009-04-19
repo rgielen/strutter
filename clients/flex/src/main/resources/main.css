@@ -1,0 +1,66 @@
+Application
+{
+    background-color: #000040;
+    padding-left: 80;
+    padding-right: 80;
+    padding-bottom: 20;
+    padding-top: 20
+}
+.TopToolBar
+{
+    color: #ffffff;
+}
+.TopToolCounter
+{
+    color: #ffffff;
+}
+.MessageInput
+{
+    border-style: solid;
+    corner-radius: 3;
+}
+StrutterItem
+{
+    padding-right:5;
+}
+.StrutterItemRightBox
+{
+    background-color: #d1d1d1;
+    border-style: solid;
+    border-color: #808080;
+    corner-radius: 3;
+    padding-left: 8;
+    padding-right: 8;
+    padding-top: 8;
+    padding-bottom: 8;
+}
+.StrutterItemButton
+{
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.StrutterItemUserName
+{
+    font-weight: bold;
+}
+.StrutterItemDate
+{
+    font-style: italic;
+}
+.StrutterItemText
+{
+}
+.Overlay
+{
+    background-color: #d1d1d1;
+    border-style: solid;
+    border-color: #808080;
+    corner-radius: 3;
+}
+.DisableOverlay
+{
+    background-color: #000000;
+    background-alpha: 0.3;
+}

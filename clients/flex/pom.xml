@@ -17,25 +17,51 @@
     <build>
         <sourceDirectory>src/main/flex</sourceDirectory>
         <testSourceDirectory>src/test/flex</testSourceDirectory>
+
+        <resources>
+          <resource>
+            <directory>${basedir}/src/main/resources</directory>
+          </resource>
+          <resource>
+            <directory>${basedir}/target/generated-resources</directory>
+          </resource>
+        </resources>
+        
         <plugins>
             <plugin>
                 <groupId>org.sonatype.flexmojos</groupId>
                 <artifactId>flexmojos-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <debug>true</debug>
+                    <sourceFile>StrutterFlex.mxml</sourceFile>
+                    <sourcePaths>
+                        <path>${basedir}/src/main/flex</path>
+                        <path>${basedir}/src/main/resources</path>
+                    </sourcePaths>
+
+                    <themes>
+                        <theme>${basedir}/src/main/resources/main.css</theme>
+                    </themes>
+                    <includeFiles>
+                        <file>${basedir}/src/main/resources/user.jpg</file>
+                    </includeFiles>
+                    <as3>true</as3>
+                </configuration>
                 <executions>
-                  <execution>
-                    <goals>
-                      <goal>wrapper</goal>
-                    </goals>
-                    <configuration>
-                      <parameters>
-                        <swf>${build.finalName}</swf>
-                        <width>100%</width>
-                        <height>100%</height>
-                      </parameters>
-                    </configuration>
-                  </execution>
+                    <execution>
+                        <goals>
+                            <goal>wrapper</goal>
+                        </goals>
+                        <configuration>
+                            <parameters>
+                                <swf>${build.finalName}</swf>
+                                <width>100%</width>
+                                <height>100%</height>
+                            </parameters>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 

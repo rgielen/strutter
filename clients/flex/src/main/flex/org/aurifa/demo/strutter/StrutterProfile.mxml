@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" styleName="Overlay">
+
+    <mx:Metadata>
+        [Event('submit')]
+        [Event('cancel')]
+    </mx:Metadata>
+
+    <mx:Script><![CDATA[
+        import org.aurifa.demo.strutter.StrutterModel;
+]]></mx:Script>
+    <mx:Form width="100%">
+        <mx:FormHeading label="Profile" />
+        <mx:FormItem label="User Name" width="100%">
+            <mx:TextInput
+                    id="alias"
+                    width="100%"
+                    text="{ StrutterModel.instance.user.alias }"
+                    change="StrutterModel.instance.user.alias = alias.text" />
+        </mx:FormItem>
+        <mx:FormItem label="Password" width="100%">
+            <mx:TextInput
+                    id="password"
+                    displayAsPassword="true"
+                    width="100%"
+                    text="{ StrutterModel.instance.user.password }"
+                    change="StrutterModel.instance.user.password = password.text"/>
+        </mx:FormItem>
+        <mx:FormItem label="Real Name" width="100%">
+            <mx:TextInput
+                    id="realname"
+                    width="100%"
+                    text="{ StrutterModel.instance.user.realname }"
+                    change="StrutterModel.instance.user.realname = realname.text"/>
+        </mx:FormItem>
+        <mx:FormItem label="Short Discription" width="100%">
+            <mx:TextInput
+                    id="shortBio"
+                    width="100%"
+                    text="{ StrutterModel.instance.user.shortBio }"
+                    change="StrutterModel.instance.user.shortBio = shortBio.text"/>
+        </mx:FormItem>
+        <mx:ControlBar horizontalAlign="right" width="100%">
+            <mx:Button
+                    label="OK"
+                    click="dispatchEvent( new Event( 'submit' ) )" />
+        </mx:ControlBar>
+    </mx:Form>
+</mx:VBox>

@@ -1,0 +1,224 @@
+<?xml version="1.0" ?>
+<mx:Object xmlns:mx="http://www.adobe.com/2006/mxml">
+    <mx:Script><![CDATA[
+        import mx.collections.ArrayCollection;
+        import mx.controls.Alert;
+        import mx.controls.TextArea;
+        import mx.managers.PopUpManager;
+        import mx.rpc.events.FaultEvent;
+        import mx.rpc.events.ResultEvent;
+
+        import flash.net.SharedObject;
+
+        import mx.utils.ObjectUtil;
+        import mx.core.Application;
+
+        [Bindable]
+        private var baseUrl:String = "http://10.0.0.214:8080/strutter-server";
+
+        private var sharedObject:SharedObject;
+
+        public function init() : void
+        {
+            sharedObject = SharedObject.getLocal("org.aurifa.demo.strutter.StrutterLogin");
+
+            StrutterModel.instance.user = new StrutterUser();
+            StrutterModel.instance.user.alias = sharedObject.data.alias;
+            StrutterModel.instance.user.password = sharedObject.data.password;
+
+            if (StrutterModel.instance.user)
+                login();
+
+        }
+
+        public function saveSharedObject() : void
+        {
+            sharedObject.data.alias = StrutterModel.instance.user.alias;
+            sharedObject.data.password = StrutterModel.instance.user.password;
+
+        }
+
+
+        public function refresh() : void
+        {
+            userService.send();
+            friendsService.send();
+            postsService.send();
+            directsService.send();
+        }
+
+        public function profileChanged() : void
+        {
+            StrutterModel.instance.currentView = StrutterModel.VIEW_NORMAL;
+            saveSharedObject();
+            //Alert.show( "StrutterController.profileChanged" );
+
+            var params:Object = new Object();
+
+            params[ "_method" ] = "put";
+            params[ "user.alias" ] = StrutterModel.instance.user.alias;
+            params[ "user.realname" ] = StrutterModel.instance.user.realname;
+            params[ "user.shortBio" ] = StrutterModel.instance.user.shortBio;
+
+            //Alert.show( editProfileService.url +  " --> \n " + ObjectUtil.toString(params) );
+
+            editProfileService.send(params);
+
+        }
+
+        public function login() : void
+        {
+            StrutterModel.instance.currentView = StrutterModel.VIEW_NORMAL;
+            saveSharedObject();
+  //          Alert.show("StrutterController.login");
+            refresh();
+        }
+
+        public function submitMessage() : void
+        {
+//            Alert.show("StrutterController.submitMessage " + StrutterModel.instance.message);
+            var params:Object = new Object();
+
+            params[ "method" ] = "post";
+            params[ "message.author.alias" ] = StrutterModel.instance.user.alias;
+            params[ "message.text" ] = StrutterModel.instance.message;
+
+            //Alert.show( editProfileService.url +  " --> \n " + ObjectUtil.toString(params) );
+
+            sendMessageService.send(params);
+
+
+            StrutterModel.instance.message = "";
+        }
+
+
+        private function parseMessages(list:ArrayCollection) : ArrayCollection
+        {
+            var message:StrutterMessage;
+            var messages:ArrayCollection = new ArrayCollection();
+
+            var dataItem:Object;
+            var allAuthors:Object = new Object();
+
+            for each (dataItem in list)
+            {
+                var author:StrutterUser = allAuthors[ dataItem.author.alias ];
+                if (author == null)
+                {
+                    author = new StrutterUser();
+                    author.alias = dataItem.author.alias;
+                    author.realname = dataItem.author.realname;
+                    author.shortBio = dataItem.author.shortBio;
+                    allAuthors[ dataItem.author.alias ] = author;
+                }
+                message = new StrutterMessage();
+                message.sentText = dataItem.sent; // todo
+                //message.sent = DateUtil.parseRFC822( dataItem.sent ); // todo
+                //message.sent = DateUtil.parseW3CDTF( dataItem.sent ); // todo
+                //message.sent =  new Date( dataItem.sent ); // todo
+
+                message.text = dataItem.text;
+                message.author = author;
+                messages.addItem(message);
+            }
+
+            return messages;
+        }
+
+        private function parseUser(dataItem:Object) : StrutterUser
+        {
+            var user:StrutterUser;
+            user = new StrutterUser();
+            user.alias = dataItem.alias;
+            user.realname = dataItem.realname;
+            user.shortBio = dataItem.shortBio;
+
+            return user;
+        }
+
+        private function onResultUser(event:ResultEvent) : void
+        {
+            StrutterModel.instance.user = parseUser( event.result[ "org.aurifa.demo.strutter.model.User" ] );
+        }
+
+        private function onResultPosts(event:ResultEvent) : void
+        {
+            StrutterModel.instance.replies = parseMessages(toArrayCollection(event.result.list[ "org.aurifa.demo.strutter.model.Message" ]));
+        }
+        private function onResultDirects(event:ResultEvent) : void
+        {
+            StrutterModel.instance.directs = parseMessages(toArrayCollection(event.result.list[ "org.aurifa.demo.strutter.model.Message" ]));
+        }
+        private function onResultFriends(event:ResultEvent) : void
+        {
+            StrutterModel.instance.friends = parseMessages(toArrayCollection(event.result.list[ "org.aurifa.demo.strutter.model.Message" ]));
+        }
+
+        private function toArrayCollection(obj:Object) : ArrayCollection
+        {
+            //StrutterModel.instance.info = ObjectUtil.toString( obj );
+            if (obj is ArrayCollection)
+                return obj as ArrayCollection;
+
+            var arr:ArrayCollection = new ArrayCollection();
+            arr.addItem(obj);
+            return arr;
+        }
+
+        private function onResultEditProfile(event:ResultEvent) : void
+        {
+        }
+
+        private function onResultSendMessage(event:ResultEvent) : void
+        {
+            refresh();
+        }
+
+        private function onFault(event:FaultEvent) : void
+        {
+            Alert.show(event.fault.message);
+        }
+        ]]></mx:Script>
+    <mx:HTTPService
+            id="friendsService"
+            url="{ baseUrl }/timeline/{ StrutterModel.instance.user.alias }.xml"
+            resultFormat="object"
+            result="onResultFriends( event )"
+            fault="onFault( event )" />
+    <mx:HTTPService
+            id="postsService"
+            url="{ baseUrl }/posts/{ StrutterModel.instance.user.alias }.xml"
+            resultFormat="object"
+            result="onResultPosts( event )"
+            fault="onFault( event )" />
+    <mx:HTTPService
+            id="directsService"
+            url="{ baseUrl }/posts/{ StrutterModel.instance.user.alias }.xml"
+            resultFormat="object"
+            result="onResultDirects( event )"
+            fault="onFault( event )" />
+    <mx:HTTPService
+            id="userService"
+            url="{ baseUrl }/user/{ StrutterModel.instance.user.alias }.xml"
+            resultFormat="object"
+            result="onResultUser( event )"
+            fault="onFault( event )" />
+
+    <mx:HTTPService
+            id="sendMessageService"
+            url="{ baseUrl }/posts/{ StrutterModel.instance.user.alias }/create"
+            resultFormat="text"
+            result="onResultSendMessage( event )"
+            fault="onFault( event )" />
+
+    <mx:HTTPService
+            id="editProfileService"
+            url="{ baseUrl }/user/{ StrutterModel.instance.user.alias }/update"
+            resultFormat="text"
+            method="POST"
+            result="onResultEditProfile( event )"
+            fault="onFault( event )" />
+
+
+
+</mx:Object>
