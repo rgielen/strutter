@@ -1,5 +1,7 @@
 package org.aurifa.demo.strutter {
+
 import mx.collections.ArrayCollection;
+
     [Bindable]
     public class StrutterUser {
 
@@ -12,7 +14,6 @@ import mx.collections.ArrayCollection;
 
         public function StrutterUser()
         {
-
         }
     }
 }

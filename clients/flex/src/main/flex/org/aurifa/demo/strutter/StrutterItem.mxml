@@ -1,9 +1,14 @@
 <?xml version="1.0" ?>
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
-    <mx:Script><![CDATA[
+    <mx:Script>
+    <![CDATA[
+
         [Bindable]
         public var model:StrutterMessage;
-        ]]></mx:Script>
+        
+    ]]>
+    </mx:Script>
+    
     <mx:DateFormatter id="df" formatString="EEEE, MMM. D, YYYY at L:NN A" />
     <mx:Canvas width="50" height="74" horizontalScrollPolicy="off" verticalScrollPolicy="off">
         <mx:Image source="{ model.author.icon }" width="50" height="50" />

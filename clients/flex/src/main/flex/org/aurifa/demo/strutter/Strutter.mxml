@@ -39,9 +39,9 @@ import org.aurifa.demo.strutter.StrutterModel;
             </mx:Repeater>
         </mx:VBox>
 
-        <mx:VBox label="REPLIES" width="100%" height="{ this.height - 120 }">
-            <mx:Repeater id="repliesRepeater" dataProvider="{ StrutterModel.instance.replies }" >
-                <strutter:StrutterItem model="{ repliesRepeater.currentItem as StrutterMessage }" />
+        <mx:VBox label="POSTS" width="100%" height="{ this.height - 120 }">
+            <mx:Repeater id="postsRepeater" dataProvider="{ StrutterModel.instance.posts }" >
+                <strutter:StrutterItem model="{ postsRepeater.currentItem as StrutterMessage }" />
             </mx:Repeater>
         </mx:VBox>
 

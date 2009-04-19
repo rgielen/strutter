@@ -1,4 +1,5 @@
 package org.aurifa.demo.strutter{
+
     import mx.collections.ArrayCollection;
 
     [Bindable]
@@ -14,7 +15,7 @@ package org.aurifa.demo.strutter{
         private static var _instance:StrutterModel = null;
 
         public var friends:ArrayCollection;
-        public var replies:ArrayCollection;
+        public var posts:ArrayCollection;
         public var directs:ArrayCollection;
 
         public var user:StrutterUser;
@@ -48,14 +49,14 @@ package org.aurifa.demo.strutter{
                 item.sent= new Date( );
                 friends.addItem( item );
             }
-            replies = new ArrayCollection();
+            posts = new ArrayCollection();
             for ( i = 0; i < 200; i ++ )
             {
                 item = new StrutterMessage();
                 item.author = user;
                 item.text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
                 item.sent= new Date( );
-                replies.addItem( item );
+                posts.addItem( item );
             }
             directs = new ArrayCollection();
             for ( i = 0; i < 200; i ++ )

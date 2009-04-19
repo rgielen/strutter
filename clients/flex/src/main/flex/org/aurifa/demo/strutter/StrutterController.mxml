@@ -3,18 +3,13 @@
     <mx:Script><![CDATA[
         import mx.collections.ArrayCollection;
         import mx.controls.Alert;
-        import mx.controls.TextArea;
-        import mx.managers.PopUpManager;
         import mx.rpc.events.FaultEvent;
         import mx.rpc.events.ResultEvent;
 
         import flash.net.SharedObject;
 
-        import mx.utils.ObjectUtil;
-        import mx.core.Application;
-
         [Bindable]
-        private var baseUrl:String = "http://10.0.0.214:8080/strutter-server";
+        private var baseUrl:String = "http://127.0.0.1:8080/strutter-server";
 
         private var sharedObject:SharedObject;
 
@@ -70,13 +65,13 @@
         {
             StrutterModel.instance.currentView = StrutterModel.VIEW_NORMAL;
             saveSharedObject();
-  //          Alert.show("StrutterController.login");
+            //          Alert.show("StrutterController.login");
             refresh();
         }
 
         public function submitMessage() : void
         {
-//            Alert.show("StrutterController.submitMessage " + StrutterModel.instance.message);
+            //            Alert.show("StrutterController.submitMessage " + StrutterModel.instance.message);
             var params:Object = new Object();
 
             params[ "method" ] = "post";
@@ -138,17 +133,19 @@
 
         private function onResultUser(event:ResultEvent) : void
         {
-            StrutterModel.instance.user = parseUser( event.result[ "org.aurifa.demo.strutter.model.User" ] );
+            StrutterModel.instance.user = parseUser(event.result[ "org.aurifa.demo.strutter.model.User" ]);
         }
 
         private function onResultPosts(event:ResultEvent) : void
         {
-            StrutterModel.instance.replies = parseMessages(toArrayCollection(event.result.list[ "org.aurifa.demo.strutter.model.Message" ]));
+            StrutterModel.instance.posts = parseMessages(toArrayCollection(event.result.list[ "org.aurifa.demo.strutter.model.Message" ]));
         }
+
         private function onResultDirects(event:ResultEvent) : void
         {
             StrutterModel.instance.directs = parseMessages(toArrayCollection(event.result.list[ "org.aurifa.demo.strutter.model.Message" ]));
         }
+
         private function onResultFriends(event:ResultEvent) : void
         {
             StrutterModel.instance.friends = parseMessages(toArrayCollection(event.result.list[ "org.aurifa.demo.strutter.model.Message" ]));
@@ -178,7 +175,11 @@
         {
             Alert.show(event.fault.message);
         }
-        ]]></mx:Script>
+        ]]>
+
+    </mx:Script>
+
+
     <mx:HTTPService
             id="friendsService"
             url="{ baseUrl }/timeline/{ StrutterModel.instance.user.alias }.xml"

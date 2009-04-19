@@ -5,9 +5,12 @@
         [Event('cancel')]
     </mx:Metadata>
     
-    <mx:Script><![CDATA[
+    <mx:Script>
+    <![CDATA[
         import org.aurifa.demo.strutter.StrutterModel;
-]]></mx:Script>
+    ]]>
+    </mx:Script>
+    
     <mx:Form width="100%">
         <mx:FormHeading label="Profile" />
         <mx:FormItem label="User Name" width="100%">
