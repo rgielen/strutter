@@ -5,10 +5,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-        <title>Message ${id}</title>
+        <title>Message ${message.id}</title>
 </head>
 <body>
-    <form action="../${id}?_method=DELETE" method="post">
+    <form action="../${message.id}?_method=DELETE" method="post">
         <p>
             Are you sure you want to delete message ${id}?
         </p>

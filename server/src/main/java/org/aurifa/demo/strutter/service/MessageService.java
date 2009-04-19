@@ -9,6 +9,7 @@ import org.hibernate.LockMode;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class MessageService extends GenericEntityService<Message, Long> {
@@ -60,4 +61,17 @@ public class MessageService extends GenericEntityService<Message, Long> {
         }
     }
 
+
+    public List<Message> getTestMessages() {
+        List<Message> msgs = new ArrayList<Message>();
+        for ( int i = 0; i < 50; i++) {
+            User user = new User("rhaix", "Rainer Hermanns", "Java Nerd");
+            Message m = new Message(user, "My Message");
+            msgs.add(m);
+
+        }
+        return msgs;
+
+
+    }
 }

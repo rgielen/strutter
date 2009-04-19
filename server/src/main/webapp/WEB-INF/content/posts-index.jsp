@@ -3,35 +3,26 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <%@taglib prefix="s" uri="/struts-tags" %>
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-        <title>Messages</title>
+        <title>Message ${message.id}</title>
 </head>
 <body>
-    <s:actionmessage />
     <table>
         <tr>
-            <th>ID</th>
             <th>Author</th>
-            <th>Date</th>
-            <th>Text</th>
-            <th>Actions</th>
+            <td><s:property value="message.author.realname" /> (<s:property value="message.author.alias" />) </td>
         </tr>
-        <s:iterator value="%{model}">
         <tr>
-            <td><s:property value="id" /></td>
-            <td><s:property value="author.realname" /> (<s:property value="author.alias" />)</td>
-            <td><s:property value="sent" /></td>
-            <td><s:property value="text" /></td>
-            <td>
-                <a href="posts/${id}">View</a> |
-                <a href="posts/${id}/edit">Edit</a> |
-                <a href="posts/${id}/deleteConfirm">Delete</a>
-            </td>
+            <th>Sent</th>
+            <td><s:property value="message.sent" /></td>
         </tr>
-        </s:iterator>
+        <tr>
+            <th>Text</th>
+            <td><s:property value="message.text" /></td>
+        </tr>
     </table>
-    <a href="posts/new">Create a new message</a>
+    <a href="../posts">Back to Messages</a>
 </body>
 </html>
+

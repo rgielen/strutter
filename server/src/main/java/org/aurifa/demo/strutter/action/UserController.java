@@ -28,8 +28,9 @@ import java.util.List;
 @Transactional
 public class UserController extends ValidationAwareSupport implements ModelDriven<Object>, Validateable {
 
-    private User model = new User();
     private String id;
+    private User model = new User();
+    private User user;
     private List<User> list;
 
     @Resource
@@ -63,6 +64,8 @@ public class UserController extends ValidationAwareSupport implements ModelDrive
 
     // UPDATE /user/1
     public String update() {
+        model.setRealname(user.getRealname());
+        model.setShortBio(user.getShortBio());
         model = userService.saveOrUpdate(model);
         addActionMessage("User updated successfully");
         return "success";
@@ -78,6 +81,7 @@ public class UserController extends ValidationAwareSupport implements ModelDrive
     // GET /user/new
     public String editNew() {
         model = new User();
+        user = model;
         return "editNew";
     }
 
@@ -101,9 +105,17 @@ public class UserController extends ValidationAwareSupport implements ModelDrive
     public void setId(String id) {
         if ( id != null) {
             model = userService.get(id);
+            user = model;
         }
-
         this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public void validate() {

@@ -9,10 +9,10 @@
         <title>New Message</title>
 </head>
 <body>
-    <s:form method="post" action="%{#request.contextPath}/posts">
+    <s:form method="post" action="%{#request.contextPath}/posts/%{id}/create">
     <table>
-        <s:textfield name="author.alias" label="Author"/>
-        <s:textarea name="text" label="Text"/>
+        <s:textfield name="message.author.alias" label="Author" value="%{id}" readonly="true"/>
+        <s:textarea name="message.text" label="Text" cols="40" rows="5" />
         <tr>
             <td colspan="2">
                 <s:submit />

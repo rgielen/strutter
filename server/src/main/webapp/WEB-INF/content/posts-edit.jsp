@@ -6,14 +6,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-        <title>Message <s:property value="id" /></title>
+        <title>Message <s:property value="message.id" /></title>
 </head>
 <body>
-    <s:form method="post" action="%{#request.contextPath}/posts/%{id}">
+    <s:form method="post" action="%{#request.contextPath}/posts/%{message.id}">
     <s:hidden name="_method" value="put" />
     <table>
-        <s:textfield name="author.alias" label="Username" disabled="true"/>
-        <s:textarea name="text" label="Message"/>
+        <s:textfield name="message.author.alias" label="Username" disabled="true"/>
+        <s:textarea name="message.text" label="Message"/>
         <tr>
             <td colspan="2">
                 <s:submit />

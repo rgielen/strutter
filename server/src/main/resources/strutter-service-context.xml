@@ -27,8 +27,8 @@
     
     <bean id="defaultDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
-        <property name="url" value="jdbc:hsqldb:mem:aname"/>
-        <!--<property name="url" value="jdbc:hsqldb:file:./strutter;shutdown=true"/>-->
+        <!--<property name="url" value="jdbc:hsqldb:mem:aname"/>-->
+        <property name="url" value="jdbc:hsqldb:file:./strutter;shutdown=true"/>
         <property name="username" value="sa"/>
         <property name="password" value=""/>
     </bean>

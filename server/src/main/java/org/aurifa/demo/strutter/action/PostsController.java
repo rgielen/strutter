@@ -7,6 +7,9 @@ import org.aurifa.demo.strutter.model.Message;
 import org.aurifa.demo.strutter.model.User;
 import org.aurifa.demo.strutter.service.MessageService;
 import org.aurifa.demo.strutter.service.UserService;
+import org.aurifa.demo.strutter.exception.NonExistentUserException;
+import org.aurifa.demo.strutter.helper.Replicator;
+import org.aurifa.demo.strutter.helper.HibernateLazyKillingReplicator;
 import org.apache.struts2.rest.HttpHeaders;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.convention.annotation.Results;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * <code>PostsController</code>
@@ -23,15 +27,15 @@ import java.util.List;
  * @version $Id: $
  */
 @Results({
-                @Result(name="success", type="redirectAction", params = {"actionName", "posts"})
+                @Result(name="success", type="redirectAction", params = {"actionName", "posts/%{id}"})
 })
 @Transactional
 public class PostsController  extends ValidationAwareSupport implements ModelDriven<Object>, Validateable {
 
-    private Message model = new Message();
-    private Long id;
-    private String author;
-    private List<Message> list;
+    private User model = new User();
+    private Message message = new Message();
+    private String id;
+    private List<Message> messages = new ArrayList<Message>();
 
     @Resource
     MessageService messageService;
@@ -47,83 +51,98 @@ public class PostsController  extends ValidationAwareSupport implements ModelDri
         this.userService = userService;
     }
 
-    // GET /user/1
+    // GET /posts/1
     public HttpHeaders show() {
-        return new DefaultHttpHeaders("show").disableCaching();
+        try {
+            List<Message> temp = messageService.getPosts(model.getAlias());
+            Replicator r = new HibernateLazyKillingReplicator();
+            for ( Message m : temp) {
+                messages.add(r.deepCopy(m));
+            }
+        } catch (NonExistentUserException e) {
+
+        }
+//        messages = messageService.getTestMessages();
+        return new DefaultHttpHeaders("show").setLocationId(model.getAlias()).disableCaching();
     }
 
-    // GET /user
+
     public HttpHeaders index() {
-        list = messageService.findAll();
-        return new DefaultHttpHeaders("index").disableCaching();
+        try {
+            List<Message> temp = messageService.getPosts(model.getAlias());
+            Replicator r = new HibernateLazyKillingReplicator();
+            for ( Message m : temp) {
+                messages.add(r.deepCopy(m));
+            }
+        } catch (NonExistentUserException e) {
+
+        }
+//        messages = messageService.getTestMessages();
+        return new DefaultHttpHeaders("show").setLocationId(model.getAlias()).disableCaching();
     }
 
-    // POST /user
+
+    // POST /posts
     public HttpHeaders create() {
-        User user = userService.get(model.getAuthor().getAlias());
-        if ( user != null) {
-            model.setAuthor(user);
-            model = messageService.saveOrUpdate(model);
+        if ( model != null) {
+            message.setAuthor(model);
+            message = messageService.saveOrUpdate(message);
             addActionMessage("New Message created successfully");
         } else {
-            addActionError("User '"+ model.getAuthor().getAlias() + "' is unknown");
+            addActionError("User '"+ model.getAlias() + "' is unknown");
             return new DefaultHttpHeaders("error");
         }
 
-        return new DefaultHttpHeaders("success").setLocationId(model.getId());
+        return new DefaultHttpHeaders("success").setLocationId(model.getAlias());
     }
 
-    // UPDATE /user/1
-    public String update() {
-        model = messageService.saveOrUpdate(model);
-        addActionMessage("Message updated successfully");
-        return "success";
-    }
-
-
-    // GET /user/1/edit
-    public String edit() {
-        return "edit";
+    // GET /posts/1/editNew
+    public HttpHeaders editNew() {
+        message = new Message();
+        //return "editNew";
+        return new DefaultHttpHeaders("editNew").setLocationId(model.getAlias()).disableCaching();
     }
 
 
-    // GET /user/new
-    public String editNew() {
-        model = new Message();
-        return "editNew";
-    }
-
-    // GET /user/1/deleteConfirm
+    // GET /posts/1/deleteConfirm
     public String deleteConfirm() {
         return "deleteConfirm";
     }
 
-    // DELETE /user/1
+    // DELETE /posts/1
     public String destroy() {
-        messageService.delete(model);
+        message = messageService.get(message.getId());
+        messageService.delete(message);
         addActionMessage("Message removed successfully");
         return "success";
     }
-
-
-    public void setId(Long id) {
+    
+    public void setId(String id) {
         if ( id != null) {
-            model = messageService.get(id);
+            model = userService.get(id);
         }
 
         this.id = id;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public String getId() {
+        return id;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
     }
 
     public Object getModel() {
-        return (list != null ? list : model);
+        return (messages != null ? messages : model);
     }
 
     public void validate() {
-        if ( model.getText() == null || model.getText().length() == 0) {
+        if ( message.getText() == null || message.getText().length() == 0) {
             addFieldError("text", "The message text is empty");
         }
 
