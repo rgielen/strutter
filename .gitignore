@@ -4,6 +4,7 @@
 *.iml
 *.iws
 *.ipr
+strutter-flex-client_temp_flex_config.xml
 target
 clients/target
 clients/flex/target
