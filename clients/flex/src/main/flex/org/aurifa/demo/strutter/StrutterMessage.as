@@ -8,7 +8,7 @@ package org.aurifa.demo.strutter {
         public var text:String;
         public var author:StrutterUser;
 
-        public function StruttermEssage()
+        public function StrutterMessage()
         {
         }
     }

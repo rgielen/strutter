@@ -19,14 +19,14 @@
         <testSourceDirectory>src/test/flex</testSourceDirectory>
 
         <resources>
-          <resource>
-            <directory>${basedir}/src/main/resources</directory>
-          </resource>
-          <resource>
-            <directory>${basedir}/target/generated-resources</directory>
-          </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${basedir}/target/generated-resources</directory>
+            </resource>
         </resources>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.sonatype.flexmojos</groupId>
@@ -41,6 +41,8 @@
                         <path>${basedir}/src/main/resources</path>
                     </sourcePaths>
 
+                    <mergeResourceBundle>false</mergeResourceBundle>
+                    <headlessServer>true</headlessServer>
                     <themes>
                         <theme>${basedir}/src/main/resources/main.css</theme>
                     </themes>
@@ -64,28 +66,30 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--<plugin>-->
-            <!--<artifactId>maven-jar-plugin</artifactId>-->
-            <!--<configuration>-->
-            <!--<archive>-->
-            <!--<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>-->
-            <!--</archive>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
-            <!--<plugin>-->
-            <!--<groupId>org.apache.maven.plugins</groupId>-->
-            <!--<artifactId>maven-source-plugin</artifactId>-->
-            <!--<executions>-->
-            <!--<execution>-->
-            <!--<id>attach-source</id>-->
-            <!--<goals>-->
-            <!--<goal>jar</goal>-->
-            <!--</goals>-->
-            <!--</execution>-->
-            <!--</executions>-->
-            <!--</plugin>-->
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <!-- here the phase you need -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/resources</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
