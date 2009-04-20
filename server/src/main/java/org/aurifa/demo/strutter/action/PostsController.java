@@ -23,14 +23,13 @@ import java.util.ArrayList;
 /**
  * <code>PostsController</code>
  *
- * @author <a href="mailto:hermanns@aixcept.de">Rainer Hermanns</a>
- * @version $Id: $
+ * @author Rainer Hermanns
  */
 @Results({
-                @Result(name="success", type="redirectAction", params = {"actionName", "posts/%{id}"})
+    @Result(name="success", type="redirectAction", params = {"actionName", "timeline/%{id}"})
 })
 @Transactional
-public class PostsController  extends ValidationAwareSupport implements ModelDriven<Object>, Validateable {
+public class PostsController extends ValidationAwareSupport implements ModelDriven<Object>, Validateable {
 
     private User model = new User();
     private Message message = new Message();
@@ -54,30 +53,24 @@ public class PostsController  extends ValidationAwareSupport implements ModelDri
     // GET /posts/1
     public HttpHeaders show() {
         try {
-            List<Message> temp = messageService.getPosts(model.getAlias());
-            Replicator r = new HibernateLazyKillingReplicator();
-            for ( Message m : temp) {
-                messages.add(r.deepCopy(m));
-            }
+            List<Message> result = messageService.getPosts(model.getAlias());
+            killLazyLoading(result);
         } catch (NonExistentUserException e) {
-
+            addActionError("User '"+ model.getAlias() + "' is unknown");
+            return new DefaultHttpHeaders("error");
         }
-//        messages = messageService.getTestMessages();
         return new DefaultHttpHeaders("show").setLocationId(model.getAlias()).disableCaching();
     }
 
 
     public HttpHeaders index() {
         try {
-            List<Message> temp = messageService.getPosts(model.getAlias());
-            Replicator r = new HibernateLazyKillingReplicator();
-            for ( Message m : temp) {
-                messages.add(r.deepCopy(m));
-            }
+            List<Message> result = messageService.getPosts(model.getAlias());
+            killLazyLoading(result);
         } catch (NonExistentUserException e) {
-
+            addActionError("User '"+ model.getAlias() + "' is unknown");
+            return new DefaultHttpHeaders("error");
         }
-//        messages = messageService.getTestMessages();
         return new DefaultHttpHeaders("show").setLocationId(model.getAlias()).disableCaching();
     }
 
@@ -89,7 +82,7 @@ public class PostsController  extends ValidationAwareSupport implements ModelDri
             message = messageService.saveOrUpdate(message);
             addActionMessage("New Message created successfully");
         } else {
-            addActionError("User '"+ model.getAlias() + "' is unknown");
+            addActionError("User '"+ model.getAlias() + "' is unknown, could not create the message...");
             return new DefaultHttpHeaders("error");
         }
 
@@ -99,7 +92,6 @@ public class PostsController  extends ValidationAwareSupport implements ModelDri
     // GET /posts/1/editNew
     public HttpHeaders editNew() {
         message = new Message();
-        //return "editNew";
         return new DefaultHttpHeaders("editNew").setLocationId(model.getAlias()).disableCaching();
     }
 
@@ -145,6 +137,12 @@ public class PostsController  extends ValidationAwareSupport implements ModelDri
         if ( message.getText() == null || message.getText().length() == 0) {
             addFieldError("text", "The message text is empty");
         }
+    }
 
+    private void killLazyLoading(List<Message> temp) {
+        Replicator r = new HibernateLazyKillingReplicator();
+        for ( Message m : temp) {
+            messages.add(r.deepCopy(m));
+        }
     }
 }

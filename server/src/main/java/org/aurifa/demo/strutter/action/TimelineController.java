@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * @author Rainer Hermanns
  */
 @Results({
-                @Result(name="success", type="redirectAction", params = {"actionName", "timeline"})
+    @Result(name="success", type="redirectAction", params = {"actionName", "timeline/%{id}"})
 })
 @Transactional
 public class TimelineController implements ModelDriven<Object> {
@@ -57,7 +57,7 @@ public class TimelineController implements ModelDriven<Object> {
         for ( Message m : temp) {
             messages.add(r.deepCopy(m));
         }
-        return new DefaultHttpHeaders("show").disableCaching();
+        return new DefaultHttpHeaders("show").setLocationId(id).disableCaching();
 
     }
 
@@ -75,5 +75,9 @@ public class TimelineController implements ModelDriven<Object> {
             model = userService.get(id);
         }
         this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 }

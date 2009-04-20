@@ -65,15 +65,6 @@ public class User {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "alias='" + alias + '\'' +
-                ", realname='" + realname + '\'' +
-                ", shortBio='" + shortBio + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals( Object o ) {
         if (this == o) {
             return true;
@@ -95,4 +86,14 @@ public class User {
     public int hashCode() {
         return alias != null ? alias.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "alias='" + alias + '\'' +
+                ", realname='" + realname + '\'' +
+                ", shortBio='" + shortBio + '\'' +
+                '}';
+    }
+
 }

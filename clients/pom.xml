@@ -12,19 +12,30 @@
     <artifactId>strutter-clients</artifactId>
     <packaging>pom</packaging>
     <name>Strutter Microblogging Platform: Clients Parent Component</name>
+    <url>http://github.com/rgielen/strutter/tree/master</url>
     
     <modules>
         <module>flex</module>
-        <module>swing</module>
+        <!--module>swing</module-->
         <!--module>javafx</module-->
-        <module>jquery</module>
-        <module>gwt</module>
+        <!--module>jquery</module-->
+        <!--module>gwt</module-->
     </modules>
 
     <build>
-        <plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>target/generated-resources</directory>
+            </resource>
+        </resources>
+
+        <!--plugins-->
             <!-- Include source code under WEB-INF/src/java -->
-            <plugin>
+<!--            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
@@ -45,7 +56,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <!--<plugin>-->
                 <!--<groupId>org.apache.maven.plugins</groupId>-->
                 <!--<artifactId>maven-war-plugin</artifactId>-->
@@ -63,64 +74,9 @@
                     <!--<warSourceExcludes>WEB-INF/classes/LICENSE.txt,WEB-INF/classes/NOTICE.txt</warSourceExcludes>-->
                 <!--</configuration>-->
             <!--</plugin>-->
-        </plugins>
+        <!--/plugins-->
 
         <finalName>${pom.artifactId}</finalName>
 
     </build>
 </project>
-<!--
-    
-
-<project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.aurifa.demo</groupId>
-    <artifactId>Strutter</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>Strutter Microblogging Platform Demo</name>
-    <url>http://github.com/rgielen/strutter/tree/master</url>
-
-    <inceptionYear>2009</inceptionYear>
-
-
-    <modules>
-        <module>share</module>
-        <module>clients</module>
-    </modules>
-
-
-    <properties>
-        <currentVersion>${pom.version}</currentVersion>
-        <struts2.springPlatformVersion>2.5.6</struts2.springPlatformVersion>
-    </properties>
-    <build>
-        <pluginManagement>
-            <plugins>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>bundle-manifest</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>manifest</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-        <defaultGoal>install</defaultGoal>
-
-    </build>
-
-</project>
-    -->

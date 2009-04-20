@@ -66,4 +66,14 @@ public class Message {
     public void setAuthor( User author ) {
         this.author = author;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", sent=" + sent +
+                ", text='" + text + '\'' +
+                ", author=" + author +
+                '}';
+    }
 }
