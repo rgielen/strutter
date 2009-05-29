@@ -36,9 +36,10 @@
                     change="StrutterModel.instance.user.realname = realname.text"/>
         </mx:FormItem>
         <mx:FormItem label="Short Discription" width="100%">
-            <mx:TextInput
+            <mx:TextArea
                     id="shortBio"
                     width="100%"
+                    height="60"
                     text="{ StrutterModel.instance.user.shortBio }"
                     change="StrutterModel.instance.user.shortBio = shortBio.text"/>
         </mx:FormItem>
